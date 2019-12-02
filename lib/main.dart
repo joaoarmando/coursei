@@ -35,8 +35,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot){
           if (snapshot.connectionState == ConnectionState.done)
             return MaterialApp(
-              title: 'Coursei',
-              
+              title: 'Coursei', 
               theme: ThemeData(
                 primarySwatch: Colors.blue,
                 fontFamily: "SourceSansPro",
