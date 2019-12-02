@@ -1,0 +1,1 @@
+{"dependencyGraph":[{"name":"connectivity","dependencies":[]},{"name":"devicelocale","dependencies":[]},{"name":"package_info","dependencies":[]},{"name":"path_provider","dependencies":[]},{"name":"share","dependencies":[]},{"name":"shared_preferences","dependencies":[]},{"name":"url_launcher","dependencies":[]}]}

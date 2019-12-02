@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "856342050729",
+    "firebase_url": "https://coursei.firebaseio.com",
+    "project_id": "coursei",
+    "storage_bucket": "coursei.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856342050729:android:0d6e2f81e8a2844fb3f6b8",
+        "android_client_info": {
+          "package_name": "com.app.coursei"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856342050729-j4ae86516ajq7dgjd1d4jo4ec9uuk6f9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN43QAkPxq5nf36cDZmgwDjJYTtN6jAc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856342050729-j4ae86516ajq7dgjd1d4jo4ec9uuk6f9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
