@@ -3,12 +3,14 @@ import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/datas/course_data.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:coursei/utils.dart';
 
 class CourseDetailsBloc extends BlocBase {
   
   final _savedCourseStateController = BehaviorSubject<bool>();
   Stream<bool> get outSavedCoursesState => _savedCourseStateController.stream;
   HomeBloc _homeBloc;
+  bool alreadyStarted = false;
  
  
   void setHomeBloc(HomeBloc homeBloc){
@@ -27,7 +29,14 @@ class CourseDetailsBloc extends BlocBase {
     if (!success) _savedCourseStateController.sink.add(true);
    
   }
-  void goToCourse(String url) async{
+  void goToCourse(CourseData course) async{
+
+    String url = course.url;
+
+    if (!alreadyStarted){
+        alreadyStarted = true;
+        sendClickStartCourse(course);
+    }
 
     if (await canLaunch(url)) {
       await launch(url);

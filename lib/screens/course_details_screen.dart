@@ -242,7 +242,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30)),
                 splashColor: prefix0.secondarySplashColor,
                 onTap: () {
-                   _courseDetailsBloc.goToCourse(widget.course.url);
+                   _courseDetailsBloc.goToCourse(widget.course);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
