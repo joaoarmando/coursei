@@ -82,6 +82,7 @@ class ExploreCategoryBloc extends BlocBase {
     if (categoryId != -1) queryBuilder.whereContainedIn("categories", categoriesList);
     if (nextPage) queryBuilder.setAmountToSkip(cached["courses"].length);
     queryBuilder.whereEqualTo("isPaid", false);
+    queryBuilder.orderByDescending("isHighlight");
     
     
     List<CourseData> courseList = [];
