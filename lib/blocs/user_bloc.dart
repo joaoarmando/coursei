@@ -1,5 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 enum DialogState{DIALOG_OPTIONS,LOGIN_STATE,LOGIN_SUCCESSFULLY}
@@ -32,12 +32,11 @@ class UserBloc extends BlocBase{
     print("current: $user");
     if (user == null) return;
 
-    var response = await ParseUser.getCurrentUserFromServer(token: user.sessionToken);
+    var response = await ParseUser.getCurrentUserFromServer(user.sessionToken);
     if (response?.success ?? false) {
       user = response.result;
     }else {
       if (response.error.code == 209){
-        print("aqii");
         user.logout();
         setUser(null);
       }

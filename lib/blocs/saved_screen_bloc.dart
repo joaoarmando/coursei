@@ -1,7 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/datas/course_data.dart';
 import 'package:coursei/datas/pending_course.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
