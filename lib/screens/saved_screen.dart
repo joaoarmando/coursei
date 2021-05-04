@@ -35,23 +35,23 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: SafeArea(
-        bottom: false,
-        child: Scaffold(
-          backgroundColor: backgroundColor,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(105),
-            child: appbar(context),
-          ),
-          body: TabBarView(
-            children: <Widget>[
-              savedCourses(context),
-              sendedCourses(context),
-            
-
-            ],
+    return Material(
+      child: DefaultTabController(
+        length: 2,
+        child: SafeArea(
+          bottom: false,
+          child: Scaffold(
+            backgroundColor: backgroundColor,
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(105),
+              child: appbar(context),
+            ),
+            body: TabBarView(
+              children: <Widget>[
+                savedCourses(context),
+                sendedCourses(context),
+              ],
+            ),
           ),
         ),
       ),
