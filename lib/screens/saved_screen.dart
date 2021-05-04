@@ -38,6 +38,7 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
     return DefaultTabController(
       length: 2,
       child: SafeArea(
+        bottom: false,
         child: Scaffold(
           backgroundColor: backgroundColor,
           appBar: PreferredSize(

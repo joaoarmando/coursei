@@ -40,6 +40,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
       child: Scaffold(
         backgroundColor: prefix0.backgroundColor, 
         body: SafeArea(
+          bottom: false,
           child: Column(
             children: <Widget>[
               appbar(context),

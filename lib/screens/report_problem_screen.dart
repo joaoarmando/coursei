@@ -37,6 +37,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: <Widget>[
             buildAppBar(context),

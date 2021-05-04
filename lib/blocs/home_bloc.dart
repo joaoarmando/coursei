@@ -61,9 +61,9 @@ class HomeBloc extends BlocBase {
       
       if (apiResponse.result != null)
         for (ParseObject categories in apiResponse.result){
-            for (Map<String,dynamic> category in categories.get("categories")){
-              categorieList.add(CategoryData.fromJSON(category));
-            }
+              categories.get("categories").forEach((category) {
+                categorieList.add(CategoryData.fromJSON(category));
+              });
         }
       _categoriesController.sink.add(categorieList);
     } 

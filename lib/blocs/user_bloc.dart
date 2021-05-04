@@ -18,7 +18,7 @@ class UserBloc extends BlocBase{
   Future<bool> startParseServer() async {
     await Parse().initialize(
       "HRqijQCx4H7hrms935HH",
-      "http://coursei.herokuapp.com/parse/",
+      "https://coursei.herokuapp.com/parse/",
       autoSendSessionId: true,
     );
     await checkLogin();

@@ -37,6 +37,7 @@ class _CategoriesScreen extends State<CategoriesScreen>  {
     return Scaffold(
       backgroundColor: prefix0.backgroundColor,
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: <Widget>[
             buildAppBar(context),

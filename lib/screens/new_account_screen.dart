@@ -35,6 +35,7 @@ class _NewAccountScreenState extends State<NewAccountScreen> {
       child: Scaffold(
         backgroundColor: backgroundColor,
         body: SafeArea(
+          bottom: false,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: ListView(

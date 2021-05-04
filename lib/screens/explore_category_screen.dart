@@ -25,6 +25,7 @@ class _ExploreCategoryScreen extends State<ExploreCategoryScreen> {
     return Scaffold(
       backgroundColor: prefix0.backgroundColor,
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: <Widget>[
             buildAppBar(context),

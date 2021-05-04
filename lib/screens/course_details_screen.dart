@@ -68,6 +68,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
     return Scaffold(
       backgroundColor: prefix0.backgroundColor,
       body: SafeArea(
+        bottom: false,
         child: Stack(
           children: <Widget>[
             //IMAGEM

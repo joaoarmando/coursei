@@ -164,6 +164,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         body: SafeArea(
+          bottom: false,
           child: Stack(
             children: <Widget>[
               Padding(

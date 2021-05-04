@@ -69,6 +69,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
       child: Scaffold(
         backgroundColor: prefix0.backgroundColor,
         body: SafeArea(
+          bottom: false,
           child: StreamBuilder<bool>(
             stream: _userAccountBloc.outLoading,
             initialData: true,

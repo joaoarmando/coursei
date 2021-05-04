@@ -84,6 +84,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         key: _scaffoldKey,
         backgroundColor: backgroundColor,
         body: SafeArea(
+          bottom: false,
           child: NestedScrollView(
             headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[

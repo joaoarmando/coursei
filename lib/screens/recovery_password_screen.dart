@@ -22,6 +22,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
       ),
       child: Scaffold(
         body: SafeArea(
+          bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
