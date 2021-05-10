@@ -132,7 +132,7 @@ class SearchCourseBloc extends BlocBase {
   }
 
 
-    @override
+  @override
   void dispose(){
     _refreshCourseListController.close();
     _coursesController.close();

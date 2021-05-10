@@ -22,6 +22,27 @@ class CoursesRepository {
     return categorieList;
   }
 
+  Future<List<CourseData>> getCourses({@required int categoryId, int skipCount = 0}) async {
+    List<CourseData> courseList = [];
+
+    var queryBuilder = QueryBuilder(ParseObject('Courses'))..setLimit(11);
+
+    if (categoryId != -1) queryBuilder.whereContainedIn("categories", [categoryId]);
+    queryBuilder.setAmountToSkip(skipCount); 
+    queryBuilder.whereEqualTo("isPaid", false);
+    queryBuilder.orderByDescending("isHighlight");
+    queryBuilder.orderByDescending("createdAt"); 
+    final apiResponse = await queryBuilder.query();
+
+    if (apiResponse.success && apiResponse.result != null ){       
+        for (var course in apiResponse.result) {
+            courseList.add(CourseData.fromParseObject(course));
+        }
+    }
+    return courseList;   
+  }
+ 
+ 
   Future<bool> saveCourse(String courseId) async{
     ParseUser user = await  ParseUser.currentUser();
     user.setAddUnique("savedCourses", courseId);
