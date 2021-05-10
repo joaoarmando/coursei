@@ -38,37 +38,28 @@ class UserBloc extends BlocBase{
     setUser(null);
     return;
   }
-  
-  Future<Null> deleteAccount() async{
-    if (user != null){
-      ParseResponse apiResponse = await user.destroy();
-      if (apiResponse.success){
-        user.logout();
-        setUser(null);
-        print(apiResponse.result);
-      }
-      else print(apiResponse.error.message);
 
-      return;
-    }
+  Future<Null> deleteAccount() async {
+    await repository.deleteAccount();
+    setUser(null);
     return;
   }
-  void goToSignIn() async{
+
+  void goToSignIn() async {
     await Future.delayed(Duration(milliseconds: 150));
     _dialogStateController.add(DialogState.LOGIN_STATE);
   }
-  void backToDefaultDialog() async{
+
+  void backToDefaultDialog() async {
     await Future.delayed(Duration(milliseconds: 300));
     _dialogStateController.add(DialogState.DIALOG_OPTIONS);
+  }  
+
+  @override
+  void dispose(){
+    _userController.close();
+    _dialogStateController.close();
+    super.dispose();
   }
-  
-
-
-@override
-void dispose(){
-  _userController.close();
-  _dialogStateController.close();
-  super.dispose();
-}
 
 }

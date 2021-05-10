@@ -28,4 +28,15 @@ class UserRepository {
     return;
   }
 
+  Future<Null> deleteAccount() async{
+    ParseUser user = await ParseUser.currentUser();
+    if (user != null){
+      ParseResponse apiResponse = await user.destroy();
+      if (apiResponse.success){
+          user.logout();       
+      }
+    }
+    return;
+  }
+
 }
