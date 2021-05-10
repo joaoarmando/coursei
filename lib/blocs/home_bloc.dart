@@ -13,6 +13,7 @@ class HomeBloc extends BlocBase {
 
   HomeBloc({@required this.prefs, @required this.repository}) {
     getCategories();
+    getCourses(-1,false);
   }
   
   final _refreshCourseListController = BehaviorSubject<LoadingCoursesState>();
@@ -30,7 +31,7 @@ class HomeBloc extends BlocBase {
 
 
   void nextPage(){
-    getCourses(categoryId,true);
+    getNextPage(categoryId);
   }
 
   void getCategories() async {
@@ -52,11 +53,12 @@ class HomeBloc extends BlocBase {
     return null;
   }
   
-  void getCourses(int categoryId, bool nextPage) async{
+  void getCourses(int categoryId, bool isNextPage) async {
+    // return from cache if this data is already fetched
     Map<String,dynamic> cached = getCoursesCache();
     var cachedIndex = getIndex(categoryId);
     if (cached != null){
-      if (!nextPage) {
+      if (!isNextPage) {
         cached["canAnimate"] = true;
         _coursesController.sink.add(cached);
         return null;
@@ -64,7 +66,7 @@ class HomeBloc extends BlocBase {
     }
 
 
-    if (!nextPage) {
+    if (!isNextPage) {
         _refreshCourseListController.sink.add(LoadingCoursesState.LOADING);
         bool isConnected = await hasInternetConnection(true);
         if (!isConnected){
@@ -76,18 +78,20 @@ class HomeBloc extends BlocBase {
 
    
 
-    if (!nextPage) _refreshCourseListController.sink.add(LoadingCoursesState.SUCCESS);
-    List<int> categoriesList = [categoryId];
-    var queryBuilder = QueryBuilder(ParseObject('Courses'))..setLimit(10);
+    if (!isNextPage) _refreshCourseListController.sink.add(LoadingCoursesState.SUCCESS);
+    var queryBuilder = QueryBuilder(ParseObject('Courses'))..setLimit(11);
 
-    if (categoryId != -1) queryBuilder.whereContainedIn("categories", categoriesList);
-    if (nextPage) queryBuilder.setAmountToSkip(cached["courses"].length);
+    if (categoryId != -1) queryBuilder.whereContainedIn("categories", [categoryId]);
+    if (isNextPage) {
+      queryBuilder.setAmountToSkip(cached["courses"].length);
+       print("amountToSkip: ${cached["courses"].length}");
+    }
+
     queryBuilder.whereEqualTo("isPaid", false);
     queryBuilder.orderByDescending("isHighlight");
     
     
-    List<CourseData> courseList = [];
-    
+    List<CourseData> courseList = [];    
 
     var apiResponse = await queryBuilder.query();
 
@@ -101,8 +105,9 @@ class HomeBloc extends BlocBase {
           if (index == -1) courseList.add(CourseData.fromParseObject(course));
         }
       }
+      print("courseList.length: ${courseList.length}");
       
-      bool hasMoreCourses = courseList.length > 9;
+      bool hasMoreCourses = courseList.length > 10;
 
       if (cached == null){
         cached = {"categoryId": categoryId, "courses":courseList, "hasMore":hasMoreCourses,"canAnimate":true};
@@ -114,11 +119,52 @@ class HomeBloc extends BlocBase {
         cachedCourses[cachedIndex] = cached;
       }
 
-      if(!nextPage) _refreshCourseListController.sink.add(LoadingCoursesState.IDLE);
+      if(!isNextPage) _refreshCourseListController.sink.add(LoadingCoursesState.IDLE);
+      
       _coursesController.sink.add(cached);
 
     }
     return null;    
+  }
+
+  void getNextPage(int categoryId) async {
+     // return from cache if this data is already fetched
+    Map<String,dynamic> cached = getCoursesCache();
+    var cachedIndex = getIndex(categoryId);
+    cached["canAnimate"] = true;
+
+
+    var queryBuilder = QueryBuilder(ParseObject('Courses'))..setLimit(11);
+
+    if (categoryId != -1) queryBuilder.whereContainedIn("categories", [categoryId]);
+
+    queryBuilder.setAmountToSkip(cached["courses"].length); 
+    queryBuilder.whereEqualTo("isPaid", false);
+    queryBuilder.orderByDescending("isHighlight");
+    final apiResponse = await queryBuilder.query();
+
+
+    if (apiResponse.success && apiResponse.result != null ){
+        List<CourseData> courseList = [];  
+
+        for (var course in apiResponse.result) {
+            int index = getCourseIndex(course.objectId,cached["courses"]);
+            if (index == -1) courseList.add(CourseData.fromParseObject(course));
+        }
+
+        bool hasMoreCourses = courseList.length > 10;
+        if (hasMoreCourses) {
+          //remove the last item to make sure that when user scroll he can see a new item after loading
+          courseList.removeAt(courseList.length);
+        }
+        cached["courses"].addAll(courseList);
+        cached["hasMore"] = hasMoreCourses;
+        cached["canAnimate"] = false;
+        cachedCourses[cachedIndex] = cached;      
+        _coursesController.sink.add(cached);
+
+    }
+    return;    
   }
 
   int getCourseIndex(String objectId,List<CourseData> courseList){

@@ -71,6 +71,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       screenName: 'HomeScreen',
     );
   }
+
   @override
   Widget build(BuildContext context) {
     setCurrentScreen();
@@ -323,88 +324,15 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Widget coursesList(BuildContext context){
-    _homeBloc.getCourses(-1,false);
     return CourseList(
       outCourseListRefresh: _homeBloc.outCourseListRefresh,
       retryLoad: _homeBloc.retryLoad,
       outCourses: _homeBloc.outCourses,
       nextPage: _homeBloc.nextPage,
       tryAgainNextPage: _homeBloc.tryAgainNextPage,
-    );
-    /*return StreamBuilder<LoadingCoursesState>(
-      stream: _homeBloc.outCourseListRefresh,
-      initialData: LoadingCoursesState.IDLE,
-      builder: (context, snapshot) {
-        if (snapshot.data == LoadingCoursesState.NO_INTERNET_CONNECTION){
-
-          return NoInternet(_homeBloc.retryLoad);
-          
-        }
-        else if (snapshot.data == LoadingCoursesState.LOADING)
-          return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(secondaryColor),strokeWidth: 2));
-        else   
-          return StreamBuilder<Map<String,dynamic>>(
-            stream: _homeBloc.outCourses,
-            builder: (context, snapshot) {
-              
-              if (snapshot.data == null) return Container();
-              var itemCount = snapshot.data["courses"].length + 1;
-                if (snapshot.data["canAnimate"]) _controller.forward();
-
-                return Opacity(
-                  opacity: opacityTween.value,
-                  child: SlideTransition(
-                    position: _offsetFloat,
-                    child:  ListView.builder(
-                    itemCount: itemCount,
-                    shrinkWrap: true,
-                    itemBuilder: (context,index){
-                      if (index < snapshot.data["courses"].length){
-                        return CourseTile(
-                          course: snapshot.data["courses"][index],
-                        );
-                      }
-                      else if (snapshot.data["hasMore"]){
-                        return FutureBuilder(
-                          future: hasInternetConnection(true),
-                          builder: (context, snapshot) {
-
-                            bool isLoading = snapshot.connectionState == ConnectionState.waiting;
-                            if (!isLoading && snapshot.data != null) isLoading = snapshot.data;
-                            if (isLoading){
-                              //tem net
-                              if (snapshot.connectionState == ConnectionState.done) _homeBloc.nextPage();
-                              return Container(
-                                width: 40,
-                                height: 40,
-                                margin: EdgeInsets.symmetric(vertical: 12,horizontal: 0),
-                                alignment: Alignment.center,
-                                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(secondaryColor), strokeWidth: 2),
-                              );
-                            }
-                            else {
-                              // na tem internet
-                              return CourseTileNoInternet((){
-                                _homeBloc.tryAgainNextPage();
-                              });
-                            }
-                          },
-                        );
-                        
-                      }
-                      else return Container();
-                    },
-                  ),
-              ),
-                ); 
-
-            }
-          );
-      }
-    ); */
-    
-
+    );  
   }
+
   Widget fabAddCourse(BuildContext context){
     return Material(
       shadowColor: Colors.grey[50],
