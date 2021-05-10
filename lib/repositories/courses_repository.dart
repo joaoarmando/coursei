@@ -22,8 +22,7 @@ class CoursesRepository {
     return categorieList;
   }
 
-  Future<bool> saveCourse(CourseData course) async{
-    String courseId = course.objectId;
+  Future<bool> saveCourse(String courseId) async{
     ParseUser user = await  ParseUser.currentUser();
     user.setAddUnique("savedCourses", courseId);
 
@@ -36,8 +35,7 @@ class CoursesRepository {
     return response.success;
   }
 
-  Future<bool> removeSavedCourse(CourseData course) async{
-    String courseId = course.objectId;
+  Future<bool> removeSavedCourse(String courseId) async{
     ParseUser user = await  ParseUser.currentUser();
     user.setRemove("savedCourses", courseId);
     var response = await user.save();

@@ -25,7 +25,7 @@ class CoursesBloc extends BlocBase {
  
   void saveCourse(CourseData course) async {
     _savedCourseStateController.sink.add(true);
-    final success = await repository.saveCourse(course);
+    final success = await repository.saveCourse(course.objectId);
     if (success) {
         if (savedCourses.indexOf(course.objectId) == -1) savedCourses.add(course.objectId);
         updateSavedCoursesCount(increment: true);
@@ -33,27 +33,25 @@ class CoursesBloc extends BlocBase {
     if (!success) _savedCourseStateController.sink.add(false);
 
   }
+
   void removeSavedCourse(CourseData course) async {
      _savedCourseStateController.sink.add(false);
-    final success = await repository.removeSavedCourse(course);
+    final success = await repository.removeSavedCourse(course.objectId);
     if (success) {
         if (savedCourses.indexOf(course.objectId) != -1) savedCourses.remove(course.objectId);
         updateSavedCoursesCount(increment: false);
     }
-    if (!success) _savedCourseStateController.sink.add(true);
-   
+    if (!success) _savedCourseStateController.sink.add(true);   
   }
 
   void getSavedCourses() async {
-
     ParseUser user = await ParseUser.currentUser();
     if (user != null){
       var userSavedCourses = user.get("savedCourses");
       if (userSavedCourses != null){
           savedCourses = List<String>.from(userSavedCourses);
       }
-    }
-    
+    }    
   }
 
   void updateSavedCoursesCount({@required bool increment}){

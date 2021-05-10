@@ -2,6 +2,8 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/blocs/courses_bloc.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
+import 'package:coursei/interfaces/i_user_repository.dart';
+import 'package:coursei/repositories/user_repository.dart';
 import 'package:coursei/screens/home.dart';
 import 'package:coursei/utils.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -36,10 +38,12 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final repository = ICoursesRepositroy(prefs);
-    final _userBloc = UserBloc();
-    final _homeBloc = HomeBloc(prefs: prefs, repository: repository);
-    final _coursesBloc = CoursesBloc(prefs: prefs, repository: repository); 
+    final userRepository = IUserRespotiroy();
+    final courseRepository = ICoursesRepositroy(prefs);
+    final _userBloc = UserBloc(userRepository);
+    final _homeBloc = HomeBloc(prefs: prefs, repository: courseRepository);
+    final _coursesBloc = CoursesBloc(prefs: prefs, repository: courseRepository); 
+
     setAnalytics(analytics);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,

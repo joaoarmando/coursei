@@ -1,9 +1,12 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:coursei/repositories/user_repository.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 enum DialogState{DIALOG_OPTIONS,LOGIN_STATE,LOGIN_SUCCESSFULLY}
 class UserBloc extends BlocBase{
+
+  final UserRepository repository;
 
   final _userController = BehaviorSubject<ParseUser>();
   final _dialogStateController = BehaviorSubject<DialogState>();
@@ -13,25 +16,13 @@ class UserBloc extends BlocBase{
   Stream get outUser => _userController.stream;
   Stream<DialogState> get outDialogState => _dialogStateController.stream;
 
-  UserBloc() {
+  UserBloc(this.repository) {
     checkLogin();
   }
 
   Future<Null> checkLogin() async {
-
-    user = await ParseUser.currentUser();
-    print("current: $user");
-    if (user == null) return;
-
-    var response = await ParseUser.getCurrentUserFromServer(user.sessionToken);
-    if (response?.success ?? false) {
-      user = response.result;
-    }else {
-      if (response.error.code == 209){
-        user.logout();
-        setUser(null);
-      }
-    }
+    user = await repository.checkLogin();
+    setUser(user);   
     return;
   }
 
