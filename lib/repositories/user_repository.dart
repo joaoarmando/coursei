@@ -22,4 +22,10 @@ class UserRepository {
     return user;
   }
 
+  Future<Null> logout() async {
+    ParseUser user = await ParseUser.currentUser();
+    if (user != null) user.logout();
+    return;
+  }
+
 }

@@ -34,10 +34,11 @@ class UserBloc extends BlocBase{
   bool verifySignIn () => user != null;
 
   Future<Null> logout() async{
-    await user.logout();
+    await repository.logout();
     setUser(null);
     return;
   }
+  
   Future<Null> deleteAccount() async{
     if (user != null){
       ParseResponse apiResponse = await user.destroy();
