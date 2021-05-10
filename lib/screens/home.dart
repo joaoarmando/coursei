@@ -552,7 +552,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 splashColor: secondarySplashColor,
                 onTap: (){
                   _homeBloc.getCategories();
-                  _homeBloc.getCourses(-1, false);
+                  _homeBloc.getCourses(-1);
                 } ,
                 child: Center(
                   child: Text(
