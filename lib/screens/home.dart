@@ -32,7 +32,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-  AnimationController _categoriesController;
+  AnimationController _categoriesAnimationController;
   Animation _offsetFloatCategories; 
   double currentFabPosition = 0;
   final _userBloc = BlocProvider.getBloc<UserBloc>();
@@ -49,19 +49,20 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     getInternetConnection = hasInternetConnection(true);
     
 
-    _categoriesController = AnimationController(
+    _categoriesAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
     
     _offsetFloatCategories = Tween<Offset>(begin: Offset(0.1, 0.0), end: Offset.zero)
-        .animate(_categoriesController);
+        .animate(_categoriesAnimationController);
+        
     
   }
 
   @override
   void dispose() { 
-    _categoriesController.dispose();
+    _categoriesAnimationController.dispose();
     super.dispose();
   }
 
@@ -119,8 +120,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 
-  Widget appBarHome(){
-    _coursesBloc.getSavedCoursesCount();
+  Widget appBarHome(){    
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Row(
@@ -182,6 +182,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 ),
                 StreamBuilder<int>(
                   stream: _coursesBloc.outSavedCourses,
+                  initialData: _coursesBloc.getSavedCoursesCount(),
                   builder: (context, snapshot) {
 
                     if (snapshot.data == 0 || snapshot.data == null || !_userBloc.verifySignIn()) return Container();
@@ -258,8 +259,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
   
   Widget categoryList(BuildContext context) {
-    _homeBloc.getCategories();
-
     return StreamBuilder<List<CategoryData>>(
         stream: _homeBloc.outCategories,
         builder: (context, snapshot) {
@@ -292,10 +291,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   ),
                   Container(
                     height: 50,
-                    child: StreamBuilder<int>(
-                      stream: _homeBloc.outSelected,
-                      builder: (context, snapshotCategory) {
-                        _categoriesController.forward();
+                    color: Colors.transparent,
+                    child: StreamBuilder<List<CategoryData>>(
+                      stream: _homeBloc.outCategories,
+                      builder: (context, snapshot) {
+                        if (snapshot.data == null) return Container();
+                        _categoriesAnimationController.forward();
                         return SlideTransition(
                           position: _offsetFloatCategories,
                           child: ListView.builder(

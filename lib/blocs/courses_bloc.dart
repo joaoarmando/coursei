@@ -61,14 +61,10 @@ class CoursesBloc extends BlocBase {
      prefs.setInt('savedCoursesCount', newValue);
   }
   
-  void getSavedCoursesCount() async {
-    if (prefs == null) await Future.delayed(Duration(seconds:1));
-
-    if (prefs != null){
-       int savedCoursesCount = (prefs.getInt('savedCoursesCount') ?? 0);
-      _savedCoursesController.sink.add(savedCoursesCount);
-    }
-     
+  int getSavedCoursesCount() {
+    int savedCoursesCount = (prefs.getInt('savedCoursesCount') ?? 0);
+    _savedCoursesController.sink.add(savedCoursesCount);
+    return savedCoursesCount;     
   }
   
   void clearNotificationBadge() async {

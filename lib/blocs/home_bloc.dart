@@ -1,5 +1,4 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:coursei/blocs/saved_screen_bloc.dart';
 import 'package:coursei/datas/category_data.dart';
 import 'package:coursei/datas/course_data.dart';
 import 'package:coursei/interfaces/i_courses_repository.dart';
@@ -12,14 +11,14 @@ import 'package:meta/meta.dart';
 class HomeBloc extends BlocBase {
   ICoursesRepositroy repository;
 
-  HomeBloc({@required this.prefs, @required this.repository});
+  HomeBloc({@required this.prefs, @required this.repository}) {
+    getCategories();
+  }
   
-  final _selectController = BehaviorSubject<int>();
   final _refreshCourseListController = BehaviorSubject<LoadingCoursesState>();
   final _coursesController = BehaviorSubject<Map<String,dynamic>>();
   final _categoriesController = BehaviorSubject<List<CategoryData>>();
 
-  Stream<int> get outSelected => _selectController.stream;
   Stream<Map<String,dynamic>> get outCourses => _coursesController.stream;
   Stream<LoadingCoursesState> get outCourseListRefresh => _refreshCourseListController.stream;
   Stream<List<CategoryData>> get outCategories => _categoriesController.stream;
@@ -30,14 +29,6 @@ class HomeBloc extends BlocBase {
 
 
 
-  void selectCategory(int _categoryId){
-    if (categoryId != null){
-      categoryId = _categoryId;
-      _selectController.sink.add(categoryId);
-    }
-    getCourses(categoryId,false);
-
-  }
   void nextPage(){
     getCourses(categoryId,true);
   }
@@ -50,6 +41,7 @@ class HomeBloc extends BlocBase {
   void tryAgainNextPage(){
     _coursesController.sink.add(getCoursesCache());
   }
+
   Map<String,dynamic> getCoursesCache(){
     Map<String,dynamic> cached;
     var cachedIndex = getIndex(categoryId);
@@ -153,7 +145,6 @@ class HomeBloc extends BlocBase {
 
   @override
   void dispose(){
-    _selectController.close();
     _refreshCourseListController.close();
     _coursesController.close();
     _categoriesController.close();
