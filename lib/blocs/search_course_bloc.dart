@@ -49,7 +49,8 @@ class SearchCourseBloc extends BlocBase {
   void tryAgainNextPage(){
     _coursesController.sink.add(getCoursesCache());
   }
-   Map<String,dynamic> getCoursesCache(){
+   
+  Map<String,dynamic> getCoursesCache(){
     Map<String,dynamic> cached;
     var cachedIndex = getIndex(search);
     if (cachedIndex != -1){

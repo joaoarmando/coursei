@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/appColors.dart';
 import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/blocs/courses_bloc.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/login_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
@@ -36,7 +37,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   double currentFabPosition = 0;
   final _userBloc = BlocProvider.getBloc<UserBloc>();
   final _homeBloc = BlocProvider.getBloc<HomeBloc>();
-  var subscription;
+  final _coursesBloc = BlocProvider.getBloc<CoursesBloc>();
   bool firstLoadComplete = true;
   Future<bool> getInternetConnection;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -44,9 +45,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   initState() {
     super.initState();
-    timeDilation = 1; // Will slow down animations by a factor of two
-    _homeBloc.startSharedPreferences();
-    _homeBloc.getSavedCourses();
+    _coursesBloc.getSavedCourses();
     getInternetConnection = hasInternetConnection(true);
     
 
@@ -121,7 +120,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Widget appBarHome(){
-    _homeBloc.getSavedCoursesCount();
+    _coursesBloc.getSavedCoursesCount();
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Row(
@@ -149,7 +148,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     //vai pra tela de cursos salvos
                     await Future.delayed(Duration(milliseconds: 150));
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SavedCoursesScreen(),settings: RouteSettings(name: "SavedCoursesScreen")));
-                    _homeBloc.clearNotificationBadge();
+                    _coursesBloc.clearNotificationBadge();
                   }
                   else{
                     //mostra dialog  
@@ -182,7 +181,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     )
                 ),
                 StreamBuilder<int>(
-                  stream: _homeBloc.outSavedCourses,
+                  stream: _coursesBloc.outSavedCourses,
                   builder: (context, snapshot) {
 
                     if (snapshot.data == 0 || snapshot.data == null || !_userBloc.verifySignIn()) return Container();

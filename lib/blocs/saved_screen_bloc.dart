@@ -132,6 +132,7 @@ class SavedCourseScreenBloc extends BlocBase {
     
     return null;    
   }
+  
   void removeCourse(CourseData course){
 
     var index = getIndex(course.objectId);
@@ -158,7 +159,7 @@ class SavedCourseScreenBloc extends BlocBase {
 
 
   
-    @override
+  @override
   void dispose(){
     _savedCoursesController.close();
     _refreshCourseListController.close();

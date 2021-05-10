@@ -13,17 +13,8 @@ class UserBloc extends BlocBase{
   Stream get outUser => _userController.stream;
   Stream<DialogState> get outDialogState => _dialogStateController.stream;
 
-  
-
-  Future<bool> startParseServer() async {
-    await Parse().initialize(
-      "HRqijQCx4H7hrms935HH",
-      "https://coursei.herokuapp.com/parse/",
-      autoSendSessionId: true,
-    );
-    await checkLogin();
-    return true;
-
+  UserBloc() {
+    checkLogin();
   }
 
   Future<Null> checkLogin() async {

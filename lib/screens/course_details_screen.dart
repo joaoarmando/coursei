@@ -1,7 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coursei/appColors.dart' as prefix0;
-import 'package:coursei/blocs/course_details_bloc.dart';
+import 'package:coursei/appColors.dart';
+import 'package:coursei/blocs/courses_bloc.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/login_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
@@ -28,8 +28,7 @@ class CourseDetailsScreen extends StatefulWidget {
 
 class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleTickerProviderStateMixin{
   final _userBloc = BlocProvider.getBloc<UserBloc>();
-  final _homeBloc = BlocProvider.getBloc<HomeBloc>();
-  final CourseDetailsBloc _courseDetailsBloc = CourseDetailsBloc();
+  final _coursesBloc = BlocProvider.getBloc<CoursesBloc>();
   AnimationController _controller;
   Animation<Offset> _offsetFloat; 
   Animation<double> opacityTween;
@@ -37,7 +36,6 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
   @override
   void initState(){
     super.initState();
-    _courseDetailsBloc.setHomeBloc(_homeBloc);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -64,9 +62,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
 
   @override
   Widget build(BuildContext context) {
-
+    
     return Scaffold(
-      backgroundColor: prefix0.backgroundColor,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         bottom: false,
         child: Stack(
@@ -97,7 +95,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                       width:20, 
                       height:20, 
                       alignment: Alignment.center, 
-                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(prefix0.secondaryColor),strokeWidth: 1,)
+                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(secondaryColor),strokeWidth: 1,)
                     )
                   ),
                   errorWidget: (context, url, error) => Icon(Icons.error),
@@ -160,7 +158,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                                 padding: const EdgeInsets.symmetric(vertical:0, horizontal: 12),
                                 child: Text(widget.course.title,
                                   style: TextStyle(
-                                    color: prefix0.secondaryText,
+                                    color: secondaryText,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 18
                                   ), 
@@ -176,14 +174,14 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                                     children: <Widget>[
                                       Text("Descrição",
                                         style: TextStyle(
-                                          color: prefix0.secondaryText,
+                                          color: secondaryText,
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold
                                         ),
                                       ),
                                       Text(widget.course.description,
                                         style: TextStyle(
-                                          color: prefix0.tertiaryText,
+                                          color: tertiaryText,
                                           fontSize: 15
                                         ),
                                       ),
@@ -227,10 +225,10 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
             width: MediaQuery.of(context).size.width * .6,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(topLeft: Radius.circular(30)),
-              color: prefix0.secondaryColor,
+              color: secondaryColor,
               boxShadow:[
                 BoxShadow(
-                  color: prefix0.secondaryColor.withOpacity(.4),
+                  color: secondaryColor.withOpacity(.4),
                   offset: Offset(10, 0),
                   blurRadius: 10.0)
               ]
@@ -241,16 +239,16 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
               color: Colors.transparent,
               child: InkWell(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30)),
-                splashColor: prefix0.secondarySplashColor,
+                splashColor: secondarySplashColor,
                 onTap: () {
-                   _courseDetailsBloc.goToCourse(widget.course);
+                   _coursesBloc.goToCourse(widget.course);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text("Começar agora!",
                       style: TextStyle(
-                        color: prefix0.secondaryText,
+                        color: secondaryText,
                         fontSize: 18,
                         fontWeight: FontWeight.w700
                       ),
@@ -290,18 +288,18 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
       margin:EdgeInsets.symmetric(vertical: 0,horizontal: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: prefix0.greyBackground
+        color: greyBackground
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           //Image.asset(imagePath,height: 30,width: 30,),
-          Icon(icon,size: 30, color: prefix0.secondaryColor),
+          Icon(icon,size: 30, color: secondaryColor),
           SizedBox(height: 3),
           Text(text,
             style: TextStyle(
-              color: prefix0.tertiaryText,
+              color: tertiaryText,
               fontWeight: FontWeight.w700,
               fontSize: 13
             )
@@ -329,10 +327,10 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
           width:100,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(topRight: Radius.circular(999)),
-            color: prefix0.secondaryColor,
+            color: secondaryColor,
             boxShadow:[
               BoxShadow(
-                color: prefix0.secondaryColor.withOpacity(.4),
+                color: secondaryColor.withOpacity(.4),
                 offset: Offset(5, 0),
                 blurRadius: 10.0)
             ]
@@ -342,19 +340,19 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
             elevation: 6.0,
             color: Colors.transparent,
             child: StreamBuilder<bool>(
-              stream: _courseDetailsBloc.outSavedCoursesState,
-              initialData: _homeBloc.userHasSavedCourse(widget.course.objectId),
+              stream: _coursesBloc.outSavedCoursesState,
+              initialData: _coursesBloc.userHasSavedCourse(widget.course.objectId),
               builder: (context, snapshot) {
                 bool isSaved = snapshot.data; 
                 return InkWell(
                   borderRadius: const BorderRadius.only(topRight: Radius.circular(999)),
-                  splashColor: prefix0.secondarySplashColor,
+                  splashColor: secondarySplashColor,
                   onTap: ()  async{
                     if (await ParseUser.currentUser() != null ) {
                       if (!isSaved)
-                        _courseDetailsBloc.saveCourse(widget.course);
+                        _coursesBloc.saveCourse(widget.course);
                       else  
-                        _courseDetailsBloc.removeSavedCourse(widget.course);
+                        _coursesBloc.removeSavedCourse(widget.course);
                     }else {
                       showDialogSignUp();
                     }
@@ -365,7 +363,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                   child: Padding(
                       padding: const EdgeInsets.only(right: 6),
                       child: Icon(isSaved ? Icons.bookmark : Icons.bookmark_border,
-                        color: prefix0.secondaryText, 
+                        color: secondaryText, 
                         size: 35
                       ),
                   ),
@@ -391,8 +389,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
         ) ,
         content: Theme(
           data: Theme.of(context).copyWith(
-            primaryColor: prefix0.secondaryColor,
-            cursorColor: prefix0.secondaryColor,
+            primaryColor: secondaryColor,
+            cursorColor: secondaryColor,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -420,12 +418,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
       children: <Widget>[
         Text(
           "Mais opções",
-          style: TextStyle(color: prefix0.primaryText, fontSize: 21,fontWeight: FontWeight.w700),
+          style: TextStyle(color: primaryText, fontSize: 21,fontWeight: FontWeight.w700),
           textAlign: TextAlign.left,
         ),
         SizedBox(height: 15),
         _buildDialogButton(
-          color:prefix0.secondaryColor,
+          color:secondaryColor,
           text:"Compartilhar curso",
           function:() async{
             await Future.delayed(Duration(milliseconds: 150));
@@ -462,7 +460,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
               width: MediaQuery.of(context).size.width * .7,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: prefix0.backgroundColor,
+                color: backgroundColor,
                 border: Border.all(color: color, width: 1)
               ),
               child: Material(
@@ -471,12 +469,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
-                  splashColor: prefix0.primarySplashColor,
+                  splashColor: primarySplashColor,
                   onTap: function,
                   child:  Center(
                     child: Text(text,
                       style: TextStyle(
-                        color: color == prefix0.secondaryColor ? prefix0.secondaryText : Colors.red,
+                        color: color == secondaryColor ? secondaryText : Colors.red,
                         fontSize: 18,
                         fontWeight: FontWeight.w700
                       ),
@@ -504,8 +502,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
         ) ,
         content: Theme(
           data: Theme.of(context).copyWith(
-            primaryColor: prefix0.secondaryColor,
-            cursorColor: prefix0.secondaryColor,
+            primaryColor: secondaryColor,
+            cursorColor: secondaryColor,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -549,12 +547,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
     children: <Widget>[
       Text(
         "Fazer login",
-        style: TextStyle(color: prefix0.primaryText, fontSize: 21,fontWeight: FontWeight.w700),
+        style: TextStyle(color: primaryText, fontSize: 21,fontWeight: FontWeight.w700),
         textAlign: TextAlign.left,
       ),
       SizedBox(height: 15),
       Text("Você precisa fazer login para ver seus cursos salvos",
-        style: TextStyle(color: prefix0.secondaryText, fontSize: 18, fontWeight: FontWeight.w600),
+        style: TextStyle(color: secondaryText, fontSize: 18, fontWeight: FontWeight.w600),
       ),
       SizedBox(height: 15),
       _buildDialogLoginButton(
@@ -593,8 +591,8 @@ Widget _buildDialogLoginButton({@required isPrimaryButton, String text, Function
               width: MediaQuery.of(context).size.width * .7,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: isPrimaryButton ? prefix0.secondaryColor : prefix0.backgroundColor,
-                border: Border.all(color: prefix0.secondaryColor, width: 1)
+                color: isPrimaryButton ? secondaryColor : backgroundColor,
+                border: Border.all(color: secondaryColor, width: 1)
               ),
               child: Material(
                 type: MaterialType.transparency,
@@ -602,12 +600,12 @@ Widget _buildDialogLoginButton({@required isPrimaryButton, String text, Function
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
-                  splashColor: prefix0.secondarySplashColor,
+                  splashColor: secondarySplashColor,
                   onTap: function,
                   child:  Center(
                     child: Text(text,
                       style: TextStyle(
-                        color: isPrimaryButton ? prefix0.primaryText : prefix0.secondaryColor,
+                        color: isPrimaryButton ? primaryText : secondaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w700
                       ),

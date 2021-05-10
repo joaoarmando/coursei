@@ -26,7 +26,6 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
   void initState() {
     _savedCourseBloc.startSharedPreferences();
     _savedCourseBloc.getSendedCourses(false);
-    _homeBloc.setSavedCourseScreenBloc(_savedCourseBloc);
     timeago.setLocaleMessages('pt', timeago.PtBrMessages());
     super.initState();
   }
