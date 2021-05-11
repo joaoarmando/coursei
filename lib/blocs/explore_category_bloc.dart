@@ -2,12 +2,14 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/blocs/saved_screen_bloc.dart';
 import 'package:coursei/datas/category_data.dart';
 import 'package:coursei/datas/course_data.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:coursei/interfaces/i_courses_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:coursei/utils.dart';
 
 class ExploreCategoryBloc extends BlocBase {
+  ICoursesRepositroy repository;
+
   final _selectController = BehaviorSubject<int>();
   final _refreshCourseListController = BehaviorSubject<LoadingCoursesState>();
   final _coursesController = BehaviorSubject<Map<String,dynamic>>();
@@ -18,129 +20,80 @@ class ExploreCategoryBloc extends BlocBase {
   Stream<Map<String,dynamic>> get outCourses => _coursesController.stream;
   Stream<LoadingCoursesState> get outCourseListRefresh => _refreshCourseListController.stream;
   Stream<List<CategoryData>> get outCategories => _categoriesController.stream;
-  List<Map<String,dynamic>> cachedCourses = [];
+  Map<String,dynamic> cachedCourses;
   int categoryId = -1 ;
   SharedPreferences prefs;
   List<String> savedCourses = [];
   SavedCourseScreenBloc savedCourseScreenBloc;
-
-
-
-
-  void selectCategory(int _categoryId){
-    if (categoryId != null){
-      categoryId = _categoryId;
-      _selectController.sink.add(categoryId);
-    }
-    getCourses(categoryId,false);
-
+  ExploreCategoryBloc(this.categoryId, this.repository) {
+    getCourses(categoryId);
   }
+
+
   void nextPage(){
-    getCourses(categoryId,true);
+    getNextPage(categoryId);
   }
 
   void tryAgainNextPage(){
-    _coursesController.sink.add(getCoursesCache());
+    _coursesController.sink.add(cachedCourses);
   }
-  Map<String,dynamic> getCoursesCache(){
-    Map<String,dynamic> cached;
-    var cachedIndex = getIndex(categoryId);
-    if (cachedIndex != -1){
-      cached = cachedCourses[cachedIndex];
-      return cached;
-    }
-    return null;
-  }
-  void getCourses(int categoryId, bool nextPage) async{
-    Map<String,dynamic> cached = getCoursesCache();
-    var cachedIndex = getIndex(categoryId);
+
+
+  void getCourses(int categoryId) async {
+    // return from cache if this data is already fetched
+    Map<String,dynamic> cached = cachedCourses;
     if (cached != null){
-      if (!nextPage) {
-         cached["canAnimate"] = true;
+        cached["canAnimate"] = true;
         _coursesController.sink.add(cached);
         return null;
-      } 
     }
 
-
-    if (!nextPage) {
-        _refreshCourseListController.sink.add(LoadingCoursesState.LOADING);
-        bool isConnected = await hasInternetConnection(true);
-        if (!isConnected){
-          _refreshCourseListController.sink.add(LoadingCoursesState.NO_INTERNET_CONNECTION);
-          return null;
-        }
+    _refreshCourseListController.sink.add(LoadingCoursesState.LOADING);
+    bool hasInternet = await hasInternetConnection(true);
+    if (!hasInternet){
+      _refreshCourseListController.sink.add(LoadingCoursesState.NO_INTERNET_CONNECTION);
+      return null;
     }
- 
 
-   
-
-    if (!nextPage) _refreshCourseListController.sink.add(LoadingCoursesState.SUCCESS);
-    List<int> categoriesList = [categoryId];
-    var queryBuilder = QueryBuilder(ParseObject('Courses'))..setLimit(10);
-
-    if (categoryId != -1) queryBuilder.whereContainedIn("categories", categoriesList);
-    if (nextPage) queryBuilder.setAmountToSkip(cached["courses"].length);
-    queryBuilder.whereEqualTo("isPaid", false);
-    queryBuilder.orderByDescending("isHighlight");
-    
-    
-    List<CourseData> courseList = [];
-    
-
-    var apiResponse = await queryBuilder.query();
-
-    if (apiResponse.success){
-      if (apiResponse.result != null){
-        //Há cursos
-        for (var course in apiResponse.result){
-
-          int index = -1;
-          if (cached != null) index =  getCourseIndex(course.objectId,cached["courses"]);
-          if (index == -1) courseList.add(CourseData.fromParseObject(course));
-        }
-      }
-      
-      bool hasMoreCourses = courseList.length > 9;
-
-      if (cached == null){
-        cached = {"categoryId": categoryId, "courses":courseList, "hasMore":hasMoreCourses, "canAnimate": true};
-        cachedCourses.add(cached);
-      }else {
-        cached["courses"].addAll(courseList);
-        cached["hasMore"] = hasMoreCourses;
-        cached["canAnimate"] = false;
-        cachedCourses[cachedIndex] = cached;
-      }
-
-      if(!nextPage) _refreshCourseListController.sink.add(LoadingCoursesState.IDLE);
-      _coursesController.sink.add(cached);
-
+    final courseList = await repository.getCourses(categoryId: categoryId);
+    bool hasMoreCourses = courseList.length > 10;    
+    if (cached == null){
+      cached = {"categoryId": categoryId, "courses":courseList, "hasMore":hasMoreCourses,"canAnimate":true};
+      cachedCourses = cached;
     }
+    
+    _coursesController.sink.add(cached);
+
+
+    _refreshCourseListController.sink.add(LoadingCoursesState.SUCCESS);
+    _refreshCourseListController.sink.add(LoadingCoursesState.IDLE);
+
+    
     return null;    
   }
 
-  int getCourseIndex(String objectId,List<CourseData> courseList){
-    for (var i = 0; i < courseList.length; i++){
-      if (courseList[i].objectId == objectId){
-          return i;
-      }
-    }
-    return -1;
+  void getNextPage(int categoryId) async {
+     // return from cache if this data is already fetched
+    Map<String,dynamic> cached = cachedCourses;
+    cached["canAnimate"] = true;
+
+    final courseList = await repository.getCourses(categoryId: categoryId, skipCount: cached["courses"].length);
+    final hasNextPage = courseList.length > 0;
+
+    cached["courses"].addAll(courseList);
+    cached["hasMore"] = hasNextPage;
+    cached["canAnimate"] = false;
+    cachedCourses = cached;      
+    _coursesController.sink.add(cached);
+    return;    
   }
+
   
   void retryLoad(){
-    getCourses(categoryId, false);
+    getCourses(categoryId);
   }
 
 
-  int getIndex(int categoryId){
-    for (var i = 0; i < cachedCourses.length; i++){
-      if (cachedCourses[i]["categoryId"] == categoryId)
-        return i;
-    }
-    return -1;
-  }
 
  @override
   void dispose(){

@@ -1,4 +1,4 @@
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/widgets/appbar_button.dart';
 import 'package:coursei/widgets/custom_appbar.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -77,7 +77,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
       margin: EdgeInsets.all(12),
       padding: EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: prefix0.greyBackground,
+        color: greyBackground,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Form(
@@ -86,7 +86,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
           focusNode: focusNode,
           controller:myController,
           style: TextStyle(
-            color: prefix0.primaryText,
+            color: primaryText,
             fontSize: 18,
           ),
           maxLines: 5,
@@ -117,7 +117,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
             hintText: "Qual o problema com este curso?",
             border: InputBorder.none,
             hintStyle: TextStyle(
-              color: prefix0.hintColor,
+              color: hintColor,
               fontSize: 18,
             )
           ),
@@ -132,7 +132,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
         children: <Widget>[
           AppBarButton(
             icon: Icons.close,
-            backgroundColor: prefix0.greyBackground,
+            backgroundColor: greyBackground,
             function: (){
               Navigator.pop(context);
             },
@@ -140,7 +140,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
           SizedBox(width: 12),
           Text("Relatar um problema",
             style: TextStyle(
-              color: prefix0.primaryText,
+              color: primaryText,
               fontWeight: FontWeight.w700,
               fontSize: 21
             ),
@@ -171,14 +171,14 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
             children: <Widget>[
               Text(actionName,
                 style: TextStyle(
-                  color: prefix0.secondaryText,
+                  color: secondaryText,
                   fontSize: 14
                 ),
                 textAlign: TextAlign.start,
               ),
               value != null ? Radio(
                 onChanged: selectRadio,
-                activeColor: prefix0.secondaryColor,
+                activeColor: secondaryColor,
                 value: value,
                 groupValue: groupValue,
 
@@ -204,10 +204,10 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
           width: !isLoading ? MediaQuery.of(context).size.width * .55 : 100,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(topLeft: Radius.circular(999)),
-            color: enabledToSend ? prefix0.secondaryColor : Colors.grey,
+            color: enabledToSend ? secondaryColor : Colors.grey,
             boxShadow:[
               BoxShadow(
-                color: enabledToSend ? prefix0.secondaryColor.withOpacity(.4) : Colors.transparent,
+                color: enabledToSend ? secondaryColor.withOpacity(.4) : Colors.transparent,
                 offset: Offset(5, 0),
                 blurRadius: 10.0)
             ]
@@ -218,7 +218,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(999)),
-              splashColor: prefix0.secondarySplashColor,
+              splashColor: secondarySplashColor,
               onTap: enabledToSend && !isLoading ? (){
 
                 if (groupValue != null)  reportProblem(groupValue); 
@@ -229,12 +229,12 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                   alignment: Alignment.center,
                   child: Text("Enviar",
                     style: TextStyle(
-                      color: prefix0.secondaryText,
+                      color: secondaryText,
                       fontSize: 18,
                       fontWeight: FontWeight.w700
                     ),
                   ),
-              ) : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(prefix0.secondaryText),strokeWidth: 2,)),
+              ) : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(secondaryText),strokeWidth: 2,)),
             ),
           ),
       ),
@@ -298,7 +298,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
             topRight: Radius.circular(30),
           )
         ),
-        backgroundColor: prefix0.backgroundColor,
+        backgroundColor: backgroundColor,
         builder: (builder){
           return new Container(
             height: 300,
@@ -327,12 +327,12 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
                   )
                 ),
                 Text("Obrigado!",
-                  style: TextStyle(color: prefix0.secondaryText, fontSize: 21, fontWeight: FontWeight.w600),
+                  style: TextStyle(color: secondaryText, fontSize: 21, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 5),
                 Text("Recebemos seu feedback e tentaremos resolver este problema o mais rápido possível.",
-                  style: TextStyle(color: prefix0.tertiaryText, fontSize: 15,),
+                  style: TextStyle(color: tertiaryText, fontSize: 15,),
                   textAlign: TextAlign.center,
                 ),
               ],

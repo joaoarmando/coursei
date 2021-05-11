@@ -1,5 +1,7 @@
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/search_course_bloc.dart';
+import 'package:coursei/repositories/courses_repository.dart';
 import 'package:coursei/widgets/any_items_found.dart';
 import 'package:coursei/widgets/appbar_button.dart';
 import 'package:coursei/widgets/course_tile.dart';
@@ -11,7 +13,6 @@ import 'package:flutter/material.dart';
 import '../utils.dart';
 
 class SearchCourseScreen extends StatefulWidget {
-  final SearchCourseBloc _searchCourseBloc = SearchCourseBloc();
   @override
   _SearchCourseScreenState createState() => _SearchCourseScreenState();
 }
@@ -19,10 +20,12 @@ class SearchCourseScreen extends StatefulWidget {
 class _SearchCourseScreenState extends State<SearchCourseScreen> {
   GlobalKey<FormState> appbarKey;
   var focusNode = new FocusNode();
-
+  final _coursesRepository = BlocProvider.getDependency<CoursesRepository>();
+  SearchCourseBloc _searchCourseBloc;
 
   @override
   void initState() {
+    _searchCourseBloc = SearchCourseBloc(_coursesRepository);
     Future.delayed(Duration(milliseconds: 500)).then((a){
       FocusScope.of(context).requestFocus(focusNode);
     });
@@ -34,11 +37,11 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
     
     return Theme(
       data: Theme.of(context).copyWith(
-        primaryColor: prefix0.secondaryColor,
-        cursorColor: prefix0.secondaryColor,
+        primaryColor: secondaryColor,
+        cursorColor: secondaryColor,
        ),
       child: Scaffold(
-        backgroundColor: prefix0.backgroundColor, 
+        backgroundColor: backgroundColor, 
         body: SafeArea(
           bottom: false,
           child: Column(
@@ -62,7 +65,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
         height: 45,
         padding: EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          color: prefix0.greyBackground,
+          color: greyBackground,
           borderRadius: BorderRadius.circular(10)
         ),
         child: Material(
@@ -70,18 +73,14 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
           child: TextField(
             focusNode: focusNode,
             decoration: InputDecoration(
-              suffixIcon: Icon(Icons.search,size: 30,color: prefix0.secondaryColor,),
+              suffixIcon: Icon(Icons.search,size: 30,color: secondaryColor,),
               border: InputBorder.none,
               hintText: "O que quer aprender?",
-              hintStyle: TextStyle(color: prefix0.hintColor, fontSize: 20)
+              hintStyle: TextStyle(color: hintColor, fontSize: 20)
             ),
-            onChanged: (s){
-              widget._searchCourseBloc.searchCourses(s);
-            },
-            onSubmitted: (s){
-              widget._searchCourseBloc.searchCourses(s);
-            },
-            style: TextStyle(color:prefix0.primaryText, fontSize: 20, fontWeight: FontWeight.w600),   
+            onChanged: _searchCourseBloc.onChangeSearchText,
+            onSubmitted: _searchCourseBloc.onChangeSearchText,
+            style: TextStyle(color:primaryText, fontSize: 20, fontWeight: FontWeight.w600),   
           ),
         ),
       ),
@@ -94,7 +93,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
         children: <Widget>[
           AppBarButton(
             icon: Icons.close,
-            backgroundColor: prefix0.greyBackground,
+            backgroundColor: greyBackground,
             function: () async {
               FocusScope.of(context).unfocus();
               if (MediaQuery.of(context).viewInsets.bottom > 0)
@@ -114,13 +113,13 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
   Widget coursesList(BuildContext context){
 
   return StreamBuilder<ListController>(
-    stream: widget._searchCourseBloc.outCourseListRefresh,
+    stream: _searchCourseBloc.outCourseListRefresh,
     initialData: ListController.IDLE,
     builder: (context, snapshot) {
       if (snapshot.data == ListController.LOADING)
           return Center(
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(prefix0.secondaryColor),
+              valueColor: AlwaysStoppedAnimation(secondaryColor),
               strokeWidth: 2
             )
           );
@@ -132,7 +131,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
               Text("Procure por alguma coisa...",
                 style: TextStyle(
                   fontSize: 18,
-                  color: prefix0.tertiaryText,
+                  color: tertiaryText,
                   fontWeight: FontWeight.w600
                 ),
               )
@@ -140,11 +139,11 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
           );
       }
       else if (snapshot.data == ListController.NO_INTERNET_CONNECTION){
-        return NoInternet(widget._searchCourseBloc.retryLoad);
+        return NoInternet(_searchCourseBloc.retryLoad);
       }
       else {
         return StreamBuilder<Map<String,dynamic>>(
-            stream: widget._searchCourseBloc.outCourses,
+            stream: _searchCourseBloc.outCourses,
             builder: (context, snapshot) {
               if (snapshot.data == null) return Container();
               else if (snapshot.data["courses"].length == 0) {
@@ -172,19 +171,19 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
                         if (!isLoading && snapshot.data != null) isLoading = snapshot.data;
                         if (isLoading){
                           //tem net
-                          if (snapshot.connectionState == ConnectionState.done) widget._searchCourseBloc.nextPage();
+                          if (snapshot.connectionState == ConnectionState.done) _searchCourseBloc.nextPage();
                           return Container(
                             width: 40,
                             height: 40,
                             margin: EdgeInsets.symmetric(vertical: 12,horizontal: 0),
                             alignment: Alignment.center,
-                            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(prefix0.secondaryColor), strokeWidth: 2),
+                            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(secondaryColor), strokeWidth: 2),
                           );
                         }
                         else {
                           // na tem internet
                           return CourseTileNoInternet((){
-                            widget._searchCourseBloc.tryAgainNextPage();
+                            _searchCourseBloc.tryAgainNextPage();
                           });
                         }
                       },

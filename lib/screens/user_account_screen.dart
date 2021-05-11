@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/user_account.dart';
 import 'package:coursei/blocs/user_bloc.dart';
 import 'package:coursei/widgets/appbar_button.dart';
@@ -67,7 +67,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         cursorColor: secondaryColor,
        ),
       child: Scaffold(
-        backgroundColor: prefix0.backgroundColor,
+        backgroundColor: backgroundColor,
         body: SafeArea(
           bottom: false,
           child: StreamBuilder<bool>(
@@ -161,7 +161,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         children: <Widget>[
           AppBarButton(
             icon: Icons.close,
-            backgroundColor: prefix0.greyBackground,
+            backgroundColor: greyBackground,
             function: (){
               Navigator.pop(context);
             },
@@ -170,7 +170,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
           Expanded(
             child: Text("Editar perfil",
               style: TextStyle(
-                color: prefix0.primaryText,
+                color: primaryText,
                 fontSize: 21,
                 fontWeight: FontWeight.w700
               ),
@@ -178,7 +178,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
           ),
           AppBarButton(
             icon: Icons.exit_to_app,
-            backgroundColor: prefix0.greyBackground,
+            backgroundColor: greyBackground,
             function: () async{
               screnClosed = false;
               await showDialogLogout();
@@ -219,7 +219,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                   Text("Sair da conta",
                     style: TextStyle(
                       fontSize: 21,
-                      color: prefix0.primaryText,
+                      color: primaryText,
                       fontWeight: FontWeight.bold
                     ),
                     textAlign: TextAlign.start,
@@ -234,7 +234,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                             Text("Tem certeza que deseja sair desta conta?",
                               style: TextStyle(
                                 fontSize: 18,
-                                color: prefix0.primaryText,
+                                color: primaryText,
                                 fontWeight: FontWeight.w600
                               ),
                               textAlign: TextAlign.start,
@@ -278,7 +278,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                             Text("Saindo...",
                               style: TextStyle(
                                 fontSize: 18,
-                                color: prefix0.primaryText,
+                                color: primaryText,
                                 fontWeight: FontWeight.w600
                               ),
                               textAlign: TextAlign.center,
@@ -345,7 +345,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                             Text("Se você deletar sua conta, todas as informações serão perdidas para sempre. Deseja excluir sua conta?",
                               style: TextStyle(
                                 fontSize: 18,
-                                color: prefix0.primaryText,
+                                color: primaryText,
                                 fontWeight: FontWeight.w600
                               ),
                               textAlign: TextAlign.start,
@@ -389,7 +389,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                             Text("Excluindo sua conta...",
                               style: TextStyle(
                                 fontSize: 18,
-                                color: prefix0.primaryText,
+                                color: primaryText,
                                 fontWeight: FontWeight.w600
                               ),
                               textAlign: TextAlign.center,

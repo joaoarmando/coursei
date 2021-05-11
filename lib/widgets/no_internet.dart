@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 class NoInternet extends StatelessWidget {
   final Function function;
   NoInternet(this.function);
@@ -11,7 +11,7 @@ class NoInternet extends StatelessWidget {
       children: <Widget>[
         Text("Sem conexão com a internet",
           style: TextStyle(
-            color: prefix0.secondaryText,
+            color: secondaryText,
             fontWeight: FontWeight.w600,
             fontSize: 21
           ),
@@ -34,7 +34,7 @@ class NoInternet extends StatelessWidget {
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(999),
-                    color: prefix0.secondaryColor
+                    color: secondaryColor
                   ),
                   child: Material(
                     type: MaterialType.transparency,
@@ -43,13 +43,13 @@ class NoInternet extends StatelessWidget {
                     shadowColor: Colors.grey[50],
                     child: InkWell(
                       borderRadius: BorderRadius.circular(999),
-                      splashColor: prefix0.secondarySplashColor,
+                      splashColor: secondarySplashColor,
                       onTap: function,
                       child: Center(
                         child: Text(
                           "Tentar novamente",
                           style: TextStyle(
-                            color: prefix0.secondaryText,
+                            color: secondaryText,
                             fontSize: 18,
                             fontWeight: FontWeight.w600
                           ),

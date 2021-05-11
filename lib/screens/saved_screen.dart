@@ -1,5 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/saved_screen_bloc.dart';
 import 'package:coursei/datas/pending_course.dart';
@@ -19,9 +19,7 @@ class SavedCoursesScreen extends StatefulWidget {
 }
 
 class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
-  final _savedCourseBloc = SavedCourseScreenBloc(); 
-    final _homeBloc = BlocProvider.getBloc<HomeBloc>();
-  
+  final _savedCourseBloc = SavedCourseScreenBloc();   
   @override
   void initState() {
     _savedCourseBloc.startSharedPreferences();
@@ -84,8 +82,8 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
                   children: <Widget>[
                     AppBarButton(
                       icon: Icons.close,
-                      iconColor: prefix0.secondaryText,
-                      backgroundColor: prefix0.greyBackground,
+                      iconColor: secondaryText,
+                      backgroundColor: greyBackground,
                       function: (){
                         Navigator.pop(context);
                       },
@@ -94,7 +92,7 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
                     Expanded(
                       child: Text("Seus cursos",
                         style: TextStyle(
-                          color: prefix0.primaryText,
+                          color: primaryText,
                           fontSize: 21,
                           fontWeight: FontWeight.w700,
                         ),
@@ -102,8 +100,8 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
                     ),
                     AppBarButton(
                       icon: Icons.edit,
-                      iconColor: prefix0.secondaryText,
-                      backgroundColor: prefix0.greyBackground,
+                      iconColor: secondaryText,
+                      backgroundColor: greyBackground,
                       function: (){
                         final screen = UserAccountScreen();
                         Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
@@ -114,8 +112,8 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
                // SizedBox(height: 12),
                 TabBar(
                   isScrollable: true,
-                  indicatorColor: prefix0.tertiaryText,
-                  labelColor: prefix0.tertiaryText,
+                  indicatorColor: tertiaryText,
+                  labelColor: tertiaryText,
                   labelStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   indicatorPadding: EdgeInsets.symmetric(horizontal: 24),
                   tabs: [
@@ -204,7 +202,7 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
                                 blurRadius: 2
                               )
                             ],
-                            color: prefix0.backgroundColor, 
+                            color: backgroundColor, 
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +220,7 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
-                                    color: prefix0.secondaryText
+                                    color: secondaryText
                                   ),
                                 ),
                               ),
@@ -241,7 +239,7 @@ class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
                                     Expanded(
                                       child: Text(!course.added ? "Aguardando aprovação do administrador" : "Curso adicionado",
                                         style: TextStyle(
-                                          color: prefix0.tertiaryText,
+                                          color: tertiaryText,
                                           fontSize: 15,
                                         ),
                                       ),
