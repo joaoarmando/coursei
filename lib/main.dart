@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
          Bloc((i) => _userBloc),
          Bloc((i) => _homeBloc),
          Bloc((i) => _coursesBloc),
+         Bloc((i) => _coursesBloc),
       ],
       child: MaterialApp(
         title: 'Coursei', 
@@ -65,9 +66,11 @@ class MyApp extends StatelessWidget {
         home: Home(observer),
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: analytics),
-        ],
-        
+        ],        
       ),
+      dependencies: [
+        Dependency((i) => courseRepository), //repository
+      ],
     );
   }
 }

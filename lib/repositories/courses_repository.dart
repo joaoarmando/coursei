@@ -22,7 +22,8 @@ class CoursesRepository {
     return categorieList;
   }
 
-  Future<List<CourseData>> getCourses({@required int categoryId, int skipCount = 0}) async {
+  Future<List<CourseData>> getCourses({int categoryId = -1, int skipCount = 0}) async {
+    //when categoryId is -1 get All Courses without set a category to the query
     List<CourseData> courseList = [];
 
     var queryBuilder = QueryBuilder(ParseObject('Courses'))..setLimit(11);
