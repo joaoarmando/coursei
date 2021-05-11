@@ -1,4 +1,4 @@
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/search_course_bloc.dart';
 import 'package:coursei/widgets/any_items_found.dart';
 import 'package:coursei/widgets/appbar_button.dart';
@@ -34,11 +34,11 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
     
     return Theme(
       data: Theme.of(context).copyWith(
-        primaryColor: prefix0.secondaryColor,
-        cursorColor: prefix0.secondaryColor,
+        primaryColor: secondaryColor,
+        cursorColor: secondaryColor,
        ),
       child: Scaffold(
-        backgroundColor: prefix0.backgroundColor, 
+        backgroundColor: backgroundColor, 
         body: SafeArea(
           bottom: false,
           child: Column(
@@ -62,7 +62,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
         height: 45,
         padding: EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          color: prefix0.greyBackground,
+          color: greyBackground,
           borderRadius: BorderRadius.circular(10)
         ),
         child: Material(
@@ -70,10 +70,10 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
           child: TextField(
             focusNode: focusNode,
             decoration: InputDecoration(
-              suffixIcon: Icon(Icons.search,size: 30,color: prefix0.secondaryColor,),
+              suffixIcon: Icon(Icons.search,size: 30,color: secondaryColor,),
               border: InputBorder.none,
               hintText: "O que quer aprender?",
-              hintStyle: TextStyle(color: prefix0.hintColor, fontSize: 20)
+              hintStyle: TextStyle(color: hintColor, fontSize: 20)
             ),
             onChanged: (s){
               widget._searchCourseBloc.searchCourses(s);
@@ -81,7 +81,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
             onSubmitted: (s){
               widget._searchCourseBloc.searchCourses(s);
             },
-            style: TextStyle(color:prefix0.primaryText, fontSize: 20, fontWeight: FontWeight.w600),   
+            style: TextStyle(color:primaryText, fontSize: 20, fontWeight: FontWeight.w600),   
           ),
         ),
       ),
@@ -94,7 +94,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
         children: <Widget>[
           AppBarButton(
             icon: Icons.close,
-            backgroundColor: prefix0.greyBackground,
+            backgroundColor: greyBackground,
             function: () async {
               FocusScope.of(context).unfocus();
               if (MediaQuery.of(context).viewInsets.bottom > 0)
@@ -120,7 +120,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
       if (snapshot.data == ListController.LOADING)
           return Center(
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(prefix0.secondaryColor),
+              valueColor: AlwaysStoppedAnimation(secondaryColor),
               strokeWidth: 2
             )
           );
@@ -132,7 +132,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
               Text("Procure por alguma coisa...",
                 style: TextStyle(
                   fontSize: 18,
-                  color: prefix0.tertiaryText,
+                  color: tertiaryText,
                   fontWeight: FontWeight.w600
                 ),
               )
@@ -178,7 +178,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
                             height: 40,
                             margin: EdgeInsets.symmetric(vertical: 12,horizontal: 0),
                             alignment: Alignment.center,
-                            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(prefix0.secondaryColor), strokeWidth: 2),
+                            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(secondaryColor), strokeWidth: 2),
                           );
                         }
                         else {

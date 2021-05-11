@@ -1,6 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/appColors.dart';
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/courses_bloc.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/login_bloc.dart';
@@ -19,7 +19,6 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 
 import 'categories_screen.dart';
 
@@ -579,7 +578,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
      children: <Widget>[
       Text("Sem conexão com a internet",
         style: TextStyle(
-          color: prefix0.secondaryText,
+          color: secondaryText,
           fontWeight: FontWeight.w600,
           fontSize: 14
         ),

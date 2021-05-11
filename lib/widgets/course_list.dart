@@ -2,7 +2,7 @@
 import 'package:coursei/widgets/course_tile.dart';
 import 'package:coursei/widgets/no_internet.dart';
 import 'package:flutter/material.dart';
-import '../appColors.dart' as prefix0;
+import '../appColors.dart';
 import '../utils.dart';
 import 'course_tile_no_internet.dart';
 
@@ -64,7 +64,7 @@ class _CourseListState extends State<CourseList> with TickerProviderStateMixin {
           
         }
         else if (snapshot.data == LoadingCoursesState.LOADING)
-          return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(prefix0.secondaryColor),strokeWidth: 2));
+          return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(secondaryColor),strokeWidth: 2));
         else   
           return StreamBuilder<Map<String,dynamic>>(
             stream: widget.outCourses,
@@ -102,7 +102,7 @@ class _CourseListState extends State<CourseList> with TickerProviderStateMixin {
                                 height: 40,
                                 margin: EdgeInsets.symmetric(vertical: 12,horizontal: 0),
                                 alignment: Alignment.center,
-                                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(prefix0.secondaryColor), strokeWidth: 2),
+                                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(secondaryColor), strokeWidth: 2),
                               );
                             }
                             else {

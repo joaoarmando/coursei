@@ -1,4 +1,4 @@
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/recovery_password_bloc.dart';
 import 'package:coursei/widgets/appbar_button.dart';
 import 'package:coursei/widgets/custom_appbar.dart';
@@ -17,8 +17,8 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        primaryColor: prefix0.secondaryColor,
-        cursorColor: prefix0.secondaryColor,
+        primaryColor: secondaryColor,
+        cursorColor: secondaryColor,
       ),
       child: Scaffold(
         body: SafeArea(
@@ -35,7 +35,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                         alignment:Alignment.centerLeft,
                         child: AppBarButton(
                           icon: Icons.close,
-                          backgroundColor: prefix0.greyBackground,
+                          backgroundColor: greyBackground,
                           function: (){
                             Navigator.pop(context);
                           },
@@ -45,7 +45,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                         alignment: Alignment.center,
                         child: Text(
                           "Recuperar senha",
-                          style: TextStyle(color: prefix0.primaryText, fontSize: 21,fontWeight: FontWeight.w700),
+                          style: TextStyle(color: primaryText, fontSize: 21,fontWeight: FontWeight.w700),
                           textAlign: TextAlign.center,
                         ),
                       )
@@ -73,7 +73,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Text("Digite seu email acima para recuperar sua senha",
                   style: TextStyle(
-                    color: prefix0.tertiaryText,
+                    color: tertiaryText,
                     fontSize: 14,
                   ),
                 ),
@@ -111,14 +111,14 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 21,
-                                    color: prefix0.primaryText
+                                    color: primaryText
                                   ),
                                 ),
                                 SizedBox(height: 12),
                                 Text("Você receberá um email se este endereço de email estiver associado a uma conta, verifique sua caixa de entrada/spam",
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: prefix0.secondaryText
+                                    color: secondaryText
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -151,7 +151,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
           width: MediaQuery.of(context).size.width * .8,
           height: 60,
           decoration: BoxDecoration(
-            color: prefix0.greyBackground,
+            color: greyBackground,
             borderRadius: BorderRadius.circular(10)
           ),
           child: TextField(
@@ -159,10 +159,10 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hint,
-              hintStyle: TextStyle(color: prefix0.hintColor, fontSize: 20),
+              hintStyle: TextStyle(color: hintColor, fontSize: 20),
               suffixIcon: icon != null ? Icon(icon) : null,  
             ),
-            style: TextStyle(color: prefix0.primaryText, fontSize: 20, fontWeight: FontWeight.w600),
+            style: TextStyle(color: primaryText, fontSize: 20, fontWeight: FontWeight.w600),
             obscureText: obscure,
             keyboardType: keyboardType,
           ),
@@ -206,7 +206,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                   height: 55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(999),
-                    color:  snapshot.hasData ? prefix0.secondaryColor : Colors.grey[400]
+                    color:  snapshot.hasData ? secondaryColor : Colors.grey[400]
                   ),
                   child: Material(
                     type: MaterialType.transparency,
@@ -215,7 +215,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                     shadowColor: Colors.grey[50],
                     child: InkWell(
                       borderRadius: BorderRadius.circular(999),
-                      splashColor: prefix0.secondarySplashColor,
+                      splashColor: secondarySplashColor,
                       onTap: !isLoading && snapshot.hasData  ? (){
                         _bloc.sendPasswordEmail();
                         FocusScope.of(context).unfocus();
@@ -226,7 +226,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                             child: !isLoading ? Text(
                               "Recuperar senha",
                               style: TextStyle(
-                                color: snapshot.hasData ? prefix0.secondaryText : Colors.grey,
+                                color: snapshot.hasData ? secondaryText : Colors.grey,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600
                               ),
@@ -238,7 +238,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                                 height: 25,
                                 width:25,
                                 child:CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(prefix0.tertiaryText),
+                                  valueColor: AlwaysStoppedAnimation<Color>(tertiaryText),
                                   strokeWidth: 1.0,
                                   )
                               )

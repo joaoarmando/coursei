@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/login_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
 import 'package:coursei/widgets/appbar_button.dart';
@@ -258,7 +258,7 @@ class _NewAccountScreenState extends State<NewAccountScreen> {
                                 height: 25,
                                 width:25,
                                 child:CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(prefix0.tertiaryText),
+                                  valueColor: AlwaysStoppedAnimation<Color>(tertiaryText),
                                   strokeWidth: 1.0,
                                   )
                               )

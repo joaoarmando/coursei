@@ -1,4 +1,4 @@
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/datas/category_data.dart';
 import 'package:coursei/widgets/appbar_button.dart';
 import 'package:coursei/widgets/custom_appbar.dart';
@@ -35,7 +35,7 @@ class _CategoriesScreen extends State<CategoriesScreen>  {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: prefix0.backgroundColor,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -79,7 +79,7 @@ class _CategoriesScreen extends State<CategoriesScreen>  {
         children: <Widget>[
           AppBarButton(
             icon: Icons.close,
-            backgroundColor: prefix0.greyBackground,
+            backgroundColor: greyBackground,
             function: (){
               Navigator.pop(context);
             },
@@ -87,7 +87,7 @@ class _CategoriesScreen extends State<CategoriesScreen>  {
           SizedBox(width: 12),
           Text("Todas as categorias",
             style: TextStyle(
-              color: prefix0.primaryText,
+              color: primaryText,
               fontWeight: FontWeight.w700,
               fontSize: 21
             ),
@@ -117,7 +117,7 @@ class _CategoriesScreen extends State<CategoriesScreen>  {
             children: <Widget>[
               Text(category.categoryName,
                 style: TextStyle(
-                  color: prefix0.secondaryText,
+                  color: secondaryText,
                   fontSize: 14
                 ),
                 textAlign: TextAlign.start,

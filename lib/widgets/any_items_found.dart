@@ -1,4 +1,4 @@
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:flutter/material.dart';
 
 class AnyItemsFound extends StatelessWidget {
@@ -16,7 +16,7 @@ class AnyItemsFound extends StatelessWidget {
         margin: EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: prefix0.greyBackground
+          color: greyBackground
         ),
         child: Column(
           children: <Widget>[
@@ -24,7 +24,7 @@ class AnyItemsFound extends StatelessWidget {
             SizedBox(height:12),
             Text("Nada por aqui...",
               style: TextStyle(
-                color: prefix0.secondaryText,
+                color: secondaryText,
                 fontWeight: FontWeight.w700,
                 fontSize: 18
               ),
@@ -32,7 +32,7 @@ class AnyItemsFound extends StatelessWidget {
             SizedBox(height:12),
             Text(description,
               style: TextStyle(
-                color: prefix0.secondaryText,
+                color: secondaryText,
                 fontWeight: FontWeight.w600,
                 fontSize: 15
               ),

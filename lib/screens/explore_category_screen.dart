@@ -1,5 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:coursei/appColors.dart' as prefix0;
+import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/explore_category_bloc.dart';
 import 'package:coursei/datas/category_data.dart';
 import 'package:coursei/interfaces/i_courses_repository.dart';
@@ -19,7 +19,7 @@ class ExploreCategoryScreen extends StatelessWidget {
   final ExploreCategoryBloc categoryBloc = ExploreCategoryBloc(category.categoryId, repository);
     
     return Scaffold(
-      backgroundColor: prefix0.backgroundColor,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -50,7 +50,7 @@ class ExploreCategoryScreen extends StatelessWidget {
         children: <Widget>[
           AppBarButton(
             icon: Icons.close,
-            backgroundColor: prefix0.greyBackground,
+            backgroundColor: greyBackground,
             function: (){
               Navigator.pop(context);
             },
@@ -58,7 +58,7 @@ class ExploreCategoryScreen extends StatelessWidget {
           SizedBox(width: 12),
           Text("${category.categoryName}",
             style: TextStyle(
-              color: prefix0.primaryText,
+              color: primaryText,
               fontWeight: FontWeight.w700,
               fontSize: 21
             ),
