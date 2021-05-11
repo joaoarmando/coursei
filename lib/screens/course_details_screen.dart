@@ -28,6 +28,7 @@ class CourseDetailsScreen extends StatefulWidget {
 
 class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleTickerProviderStateMixin{
   final _userBloc = BlocProvider.getBloc<UserBloc>();
+  final CourseDetailsBloc _courseDetailsBloc = CourseDetailsBloc();
   AnimationController _controller;
   Animation<Offset> _offsetFloat; 
   Animation<double> opacityTween;
@@ -240,7 +241,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30)),
                 splashColor: secondarySplashColor,
                 onTap: () {
-                  //  _courseDetailsBloc.goToCourse(widget.course);
+                   _courseDetailsBloc.goToCourse(widget.course);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
