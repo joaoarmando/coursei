@@ -1,5 +1,7 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/search_course_bloc.dart';
+import 'package:coursei/repositories/courses_repository.dart';
 import 'package:coursei/widgets/any_items_found.dart';
 import 'package:coursei/widgets/appbar_button.dart';
 import 'package:coursei/widgets/course_tile.dart';
@@ -11,7 +13,6 @@ import 'package:flutter/material.dart';
 import '../utils.dart';
 
 class SearchCourseScreen extends StatefulWidget {
-  final SearchCourseBloc _searchCourseBloc = SearchCourseBloc();
   @override
   _SearchCourseScreenState createState() => _SearchCourseScreenState();
 }
@@ -19,10 +20,12 @@ class SearchCourseScreen extends StatefulWidget {
 class _SearchCourseScreenState extends State<SearchCourseScreen> {
   GlobalKey<FormState> appbarKey;
   var focusNode = new FocusNode();
-
+  final _coursesRepository = BlocProvider.getDependency<CoursesRepository>();
+  SearchCourseBloc _searchCourseBloc;
 
   @override
   void initState() {
+    _searchCourseBloc = SearchCourseBloc(_coursesRepository);
     Future.delayed(Duration(milliseconds: 500)).then((a){
       FocusScope.of(context).requestFocus(focusNode);
     });
@@ -75,12 +78,8 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
               hintText: "O que quer aprender?",
               hintStyle: TextStyle(color: hintColor, fontSize: 20)
             ),
-            onChanged: (s){
-              widget._searchCourseBloc.searchCourses(s);
-            },
-            onSubmitted: (s){
-              widget._searchCourseBloc.searchCourses(s);
-            },
+            onChanged: _searchCourseBloc.onChangeSearchText,
+            onSubmitted: _searchCourseBloc.onChangeSearchText,
             style: TextStyle(color:primaryText, fontSize: 20, fontWeight: FontWeight.w600),   
           ),
         ),
@@ -114,7 +113,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
   Widget coursesList(BuildContext context){
 
   return StreamBuilder<ListController>(
-    stream: widget._searchCourseBloc.outCourseListRefresh,
+    stream: _searchCourseBloc.outCourseListRefresh,
     initialData: ListController.IDLE,
     builder: (context, snapshot) {
       if (snapshot.data == ListController.LOADING)
@@ -140,11 +139,11 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
           );
       }
       else if (snapshot.data == ListController.NO_INTERNET_CONNECTION){
-        return NoInternet(widget._searchCourseBloc.retryLoad);
+        return NoInternet(_searchCourseBloc.retryLoad);
       }
       else {
         return StreamBuilder<Map<String,dynamic>>(
-            stream: widget._searchCourseBloc.outCourses,
+            stream: _searchCourseBloc.outCourses,
             builder: (context, snapshot) {
               if (snapshot.data == null) return Container();
               else if (snapshot.data["courses"].length == 0) {
@@ -172,7 +171,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
                         if (!isLoading && snapshot.data != null) isLoading = snapshot.data;
                         if (isLoading){
                           //tem net
-                          if (snapshot.connectionState == ConnectionState.done) widget._searchCourseBloc.nextPage();
+                          if (snapshot.connectionState == ConnectionState.done) _searchCourseBloc.nextPage();
                           return Container(
                             width: 40,
                             height: 40,
@@ -184,7 +183,7 @@ class _SearchCourseScreenState extends State<SearchCourseScreen> {
                         else {
                           // na tem internet
                           return CourseTileNoInternet((){
-                            widget._searchCourseBloc.tryAgainNextPage();
+                            _searchCourseBloc.tryAgainNextPage();
                           });
                         }
                       },

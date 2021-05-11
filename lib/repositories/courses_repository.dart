@@ -21,7 +21,7 @@ class CoursesRepository {
     return categorieList;
   }
 
-  Future<List<CourseData>> getCourses({int categoryId = -1, int skipCount = 0}) async {
+  Future<List<CourseData>> getCourses({int categoryId = -1, int skipCount = 0, String searchText}) async {
     //when categoryId is -1 get All Courses without set a category to the query
     List<CourseData> courseList = [];
 
@@ -31,7 +31,8 @@ class CoursesRepository {
     queryBuilder.setAmountToSkip(skipCount); 
     queryBuilder.whereEqualTo("isPaid", false);
     queryBuilder.orderByDescending("isHighlight");
-    queryBuilder.orderByDescending("createdAt"); 
+    queryBuilder.orderByDescending("createdAt");
+    if (searchText != null) queryBuilder.whereContains("keywords", searchText);
     final apiResponse = await queryBuilder.query();
 
     if (apiResponse.success && apiResponse.result != null ){       
@@ -41,5 +42,4 @@ class CoursesRepository {
     }
     return courseList;   
   }
- 
  }
