@@ -1,7 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coursei/appColors.dart';
-import 'package:coursei/blocs/courses_bloc.dart';
+import 'package:coursei/blocs/courses_details_bloc.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/login_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
@@ -28,7 +28,6 @@ class CourseDetailsScreen extends StatefulWidget {
 
 class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleTickerProviderStateMixin{
   final _userBloc = BlocProvider.getBloc<UserBloc>();
-  final _coursesBloc = BlocProvider.getBloc<CoursesBloc>();
   AnimationController _controller;
   Animation<Offset> _offsetFloat; 
   Animation<double> opacityTween;
@@ -241,7 +240,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30)),
                 splashColor: secondarySplashColor,
                 onTap: () {
-                   _coursesBloc.goToCourse(widget.course);
+                  //  _courseDetailsBloc.goToCourse(widget.course);
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -340,8 +339,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
             elevation: 6.0,
             color: Colors.transparent,
             child: StreamBuilder<bool>(
-              stream: _coursesBloc.outSavedCoursesState,
-              initialData: _coursesBloc.userHasSavedCourse(widget.course.objectId),
+              stream: _userBloc.outSavedCoursesState,
+              initialData: _userBloc.userHasSavedCourse(widget.course.objectId),
               builder: (context, snapshot) {
                 bool isSaved = snapshot.data; 
                 return InkWell(
@@ -350,9 +349,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen>  with SingleT
                   onTap: ()  async{
                     if (await ParseUser.currentUser() != null ) {
                       if (!isSaved)
-                        _coursesBloc.saveCourse(widget.course);
+                        _userBloc.saveCourse(widget.course);
                       else  
-                        _coursesBloc.removeSavedCourse(widget.course);
+                        _userBloc.removeSavedCourse(widget.course);
                     }else {
                       showDialogSignUp();
                     }

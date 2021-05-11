@@ -1,5 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:coursei/blocs/courses_bloc.dart';
+import 'package:coursei/blocs/courses_details_bloc.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
 import 'package:coursei/interfaces/i_user_repository.dart';
@@ -40,9 +40,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final userRepository = IUserRespotiroy(prefs);
     final courseRepository = ICoursesRepositroy(prefs);
-    final _userBloc = UserBloc(userRepository);
-    final _homeBloc = HomeBloc(prefs: prefs, repository: courseRepository);
-    final _coursesBloc = CoursesBloc(prefs: prefs, coursesRepository: courseRepository, userRespotiroy: userRepository); 
+    final _userBloc = UserBloc(userRepository, prefs);
+
 
     setAnalytics(analytics);
     SystemChrome.setPreferredOrientations([
@@ -52,8 +51,6 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       blocs: [
          Bloc((i) => _userBloc),
-         Bloc((i) => _homeBloc),
-         Bloc((i) => _coursesBloc),
       ],
       child: MaterialApp(
         title: 'Coursei', 
@@ -68,6 +65,7 @@ class MyApp extends StatelessWidget {
         ],        
       ),
       dependencies: [
+        Dependency((i) => prefs),
         Dependency((i) => userRepository),
         Dependency((i) => courseRepository),
       ],

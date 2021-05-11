@@ -19,9 +19,7 @@ class SavedCoursesScreen extends StatefulWidget {
 }
 
 class _SavedCoursesScreenState extends State<SavedCoursesScreen> {
-  final _savedCourseBloc = SavedCourseScreenBloc(); 
-    final _homeBloc = BlocProvider.getBloc<HomeBloc>();
-  
+  final _savedCourseBloc = SavedCourseScreenBloc();   
   @override
   void initState() {
     _savedCourseBloc.startSharedPreferences();

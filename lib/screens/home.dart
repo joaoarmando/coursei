@@ -1,11 +1,10 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/appColors.dart';
-import 'package:coursei/appColors.dart';
-import 'package:coursei/blocs/courses_bloc.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/login_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
 import 'package:coursei/datas/category_data.dart';
+import 'package:coursei/interfaces/i_courses_repository.dart';
 import 'package:coursei/screens/add_course_screen.dart';
 import 'package:coursei/screens/new_account_screen.dart';
 import 'package:coursei/screens/saved_screen.dart';
@@ -19,6 +18,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'categories_screen.dart';
 
@@ -31,12 +31,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
+  final _userBloc = BlocProvider.getBloc<UserBloc>();
+  final courseRepository = BlocProvider.getDependency<ICoursesRepositroy>();
+  final prefs = BlocProvider.getDependency<SharedPreferences>();
+
   AnimationController _categoriesAnimationController;
   Animation _offsetFloatCategories; 
   double currentFabPosition = 0;
-  final _userBloc = BlocProvider.getBloc<UserBloc>();
-  final _homeBloc = BlocProvider.getBloc<HomeBloc>();
-  final _coursesBloc = BlocProvider.getBloc<CoursesBloc>();
+  HomeBloc _homeBloc;
   bool firstLoadComplete = true;
   Future<bool> getInternetConnection;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -44,9 +46,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   initState() {
     super.initState();
-    _coursesBloc.getSavedCourses();
-    getInternetConnection = hasInternetConnection(true);
-    
+    _homeBloc = HomeBloc(prefs: prefs, repository: courseRepository);
+    getInternetConnection = hasInternetConnection(true);   
 
     _categoriesAnimationController = AnimationController(
       vsync: this,
@@ -148,7 +149,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     //vai pra tela de cursos salvos
                     await Future.delayed(Duration(milliseconds: 150));
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SavedCoursesScreen(),settings: RouteSettings(name: "SavedCoursesScreen")));
-                    _coursesBloc.clearNotificationBadge();
+                    _userBloc.clearNotificationBadge();
                   }
                   else{
                     //mostra dialog  
@@ -181,8 +182,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     )
                 ),
                 StreamBuilder<int>(
-                  stream: _coursesBloc.outSavedCourses,
-                  initialData: _coursesBloc.getSavedCoursesCount(),
+                  stream: _userBloc.outSavedCourses,
+                  initialData: _userBloc.getSavedCoursesCount(),
                   builder: (context, snapshot) {
 
                     if (snapshot.data == 0 || snapshot.data == null || !_userBloc.verifySignIn()) return Container();
