@@ -38,11 +38,11 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final userRepository = IUserRespotiroy();
+    final userRepository = IUserRespotiroy(prefs);
     final courseRepository = ICoursesRepositroy(prefs);
     final _userBloc = UserBloc(userRepository);
     final _homeBloc = HomeBloc(prefs: prefs, repository: courseRepository);
-    final _coursesBloc = CoursesBloc(prefs: prefs, repository: courseRepository); 
+    final _coursesBloc = CoursesBloc(prefs: prefs, coursesRepository: courseRepository, userRespotiroy: userRepository); 
 
     setAnalytics(analytics);
     SystemChrome.setPreferredOrientations([
@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
       blocs: [
          Bloc((i) => _userBloc),
          Bloc((i) => _homeBloc),
-         Bloc((i) => _coursesBloc),
          Bloc((i) => _coursesBloc),
       ],
       child: MaterialApp(
@@ -69,7 +68,8 @@ class MyApp extends StatelessWidget {
         ],        
       ),
       dependencies: [
-        Dependency((i) => courseRepository), //repository
+        Dependency((i) => userRepository),
+        Dependency((i) => courseRepository),
       ],
     );
   }

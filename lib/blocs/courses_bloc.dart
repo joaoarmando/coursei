@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/datas/course_data.dart';
 import 'package:coursei/interfaces/i_courses_repository.dart';
+import 'package:coursei/interfaces/i_user_repository.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,7 +9,8 @@ import 'package:meta/meta.dart';
 
 class CoursesBloc extends BlocBase {
   SharedPreferences prefs;
-  ICoursesRepositroy repository;
+  ICoursesRepositroy coursesRepository;
+  IUserRespotiroy userRespotiroy;
   
   final _savedCourseStateController = BehaviorSubject<bool>();
   final _savedCoursesController = BehaviorSubject<int>.seeded(0);
@@ -19,13 +21,13 @@ class CoursesBloc extends BlocBase {
   bool alreadyStarted = false;
 
 
-  CoursesBloc({@required this.prefs, @required this.repository}){
+  CoursesBloc({@required this.prefs, @required this.coursesRepository, @required this.userRespotiroy}){
     getSavedCoursesCountFromServer();
   }
  
   void saveCourse(CourseData course) async {
     _savedCourseStateController.sink.add(true);
-    final success = await repository.saveCourse(course.objectId);
+    final success = await userRespotiroy.saveCourse(course.objectId);
     if (success) {
         if (savedCourses.indexOf(course.objectId) == -1) savedCourses.add(course.objectId);
         updateSavedCoursesCount(increment: true);
@@ -36,7 +38,7 @@ class CoursesBloc extends BlocBase {
 
   void removeSavedCourse(CourseData course) async {
      _savedCourseStateController.sink.add(false);
-    final success = await repository.removeSavedCourse(course.objectId);
+    final success = await userRespotiroy.removeSavedCourse(course.objectId);
     if (success) {
         if (savedCourses.indexOf(course.objectId) != -1) savedCourses.remove(course.objectId);
         updateSavedCoursesCount(increment: false);
@@ -68,12 +70,12 @@ class CoursesBloc extends BlocBase {
   }
   
   void clearNotificationBadge() async {
-    repository.clearNotificationBadge();
+    userRespotiroy.clearNotificationBadge();
     _savedCoursesController.sink.add(0);
   }
 
   void getSavedCoursesCountFromServer() async {
-    final notificationBadge = await repository.getSavedCoursesCountFromServer();
+    final notificationBadge = await userRespotiroy.getSavedCoursesCountFromServer();
     _savedCoursesController.sink.add(notificationBadge);
   }
 
