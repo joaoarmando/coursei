@@ -1,8 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/blocs/saved_screen_bloc.dart';
 import 'package:coursei/datas/category_data.dart';
-import 'package:coursei/datas/course_data.dart';
-import 'package:coursei/interfaces/i_courses_repository.dart';
+import 'package:coursei/interfaces/courses_repository_interface.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:coursei/utils.dart';
