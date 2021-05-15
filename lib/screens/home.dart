@@ -4,7 +4,7 @@ import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/login_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
 import 'package:coursei/datas/category_data.dart';
-import 'package:coursei/interfaces/i_courses_repository.dart';
+import 'package:coursei/interfaces/courses_repository_interface.dart';
 import 'package:coursei/screens/add_course_screen.dart';
 import 'package:coursei/screens/new_account_screen.dart';
 import 'package:coursei/screens/saved_screen.dart';

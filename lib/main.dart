@@ -2,7 +2,8 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/blocs/courses_details_bloc.dart';
 import 'package:coursei/blocs/home_bloc.dart';
 import 'package:coursei/blocs/user_bloc.dart';
-import 'package:coursei/interfaces/i_user_repository.dart';
+import 'package:coursei/interfaces/i_user_repository_interface.dart';
+import 'package:coursei/repositories/courses_repository.dart';
 import 'package:coursei/repositories/user_repository.dart';
 import 'package:coursei/screens/home.dart';
 import 'package:coursei/utils.dart';
@@ -13,7 +14,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'interfaces/i_courses_repository.dart';
+import 'interfaces/courses_repository_interface.dart';
 
 void main() async {
   SharedPreferences prefs;
@@ -38,8 +39,8 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final userRepository = IUserRespotiroy(prefs);
-    final courseRepository = ICoursesRepositroy(prefs);
+    final userRepository = UserRepository(prefs);
+    final courseRepository = CoursesRepository(prefs);
     final _userBloc = UserBloc(userRepository, prefs);
 
 

@@ -2,7 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:coursei/appColors.dart';
 import 'package:coursei/blocs/explore_category_bloc.dart';
 import 'package:coursei/datas/category_data.dart';
-import 'package:coursei/interfaces/i_courses_repository.dart';
+import 'package:coursei/interfaces/courses_repository_interface.dart';
 import 'package:coursei/widgets/appbar_button.dart';
 import 'package:coursei/widgets/custom_appbar.dart';
 import 'package:coursei/widgets/course_list.dart';
